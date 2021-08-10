@@ -1,0 +1,10 @@
+/conv_nn.py
+/network.pkl
+/network_backup.pkl
+/nn_test.py
+/simple_conv_nn.py
+/test.py
+/torch_cnn.pkl
+/torch_cnn_checkpoint.pkl
+/torch_mnistcnn.pt
+/__pycache__
