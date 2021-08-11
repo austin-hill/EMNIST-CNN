@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import mnist
-import time
 
 if __name__ == '__main__':
     class MNISTCNN(nn.Module):
