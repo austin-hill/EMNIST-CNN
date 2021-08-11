@@ -19,7 +19,7 @@ if __name__ == '__main__':
             self.fcon1 = nn.Sequential(nn.Linear(1024, 1024), nn.LeakyReLU())
             self.fcon2 = nn.Sequential(nn.Linear(1024, 128), nn.LeakyReLU())
             self.fcon3 = nn.Linear(128, 10)
-            self.dropout = nn.Dropout(p=0.6)
+            self.dropout = nn.Dropout(p=0.5)
         
         def forward(self, x):
             x = self.conv1(x)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     cnn.cuda()
 
     loss_func = nn.CrossEntropyLoss()
-    optimiser = torch.optim.SGD(cnn.parameters(), lr = 0.01, momentum=0.9)
+    optimiser = torch.optim.SGD(cnn.parameters(), lr = 0.005)
 
     def test():
         cnn.eval()
@@ -67,9 +67,9 @@ if __name__ == '__main__':
         return accuracy
 
     def train(num_epochs, cnn):
-        best_res = 99.53
-        cnn.train()
+        best_res = 99.61
         for epoch in range(num_epochs):
+            cnn.train()
             for (images, labels) in train_loader:
                 images, labels = images.cuda(), labels.cuda()
                 output = cnn.forward(images)            
@@ -85,5 +85,5 @@ if __name__ == '__main__':
             if test_res >= best_res:
                 best_res = test_res
                 torch.save(cnn, 'torch_mnistcnn.pt')
-    
-    train(30, cnn)
+    test()
+    #train(40, cnn)
