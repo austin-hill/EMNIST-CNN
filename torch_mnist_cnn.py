@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import mnist
+import time
 
 if __name__ == '__main__':
     class MNISTCNN(nn.Module):
@@ -41,8 +42,8 @@ if __name__ == '__main__':
     train_data = list(zip(train_images.float(), train_labels.astype('int64')))
     test_data = list(zip(test_images.float(), test_labels.astype('int64')))
 
-    train_loader = torch.utils.data.DataLoader(train_data, batch_size=10, shuffle=True, num_workers=1)
-    test_loader = torch.utils.data.DataLoader(test_data, batch_size=10000, shuffle=False, num_workers=1)
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=10, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=10000, shuffle=False)
     
     if use_saved == True:
         cnn = torch.load('torch_mnistcnn_checkpoint.pt')
