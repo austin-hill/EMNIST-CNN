@@ -19,7 +19,7 @@ if __name__ == '__main__':
             self.fcon1 = nn.Sequential(nn.Linear(1024, 1024), nn.LeakyReLU())
             self.fcon2 = nn.Sequential(nn.Linear(1024, 128), nn.LeakyReLU())
             self.fcon3 = nn.Linear(128, 10)
-            self.dropout = nn.Dropout(p=0.5)
+            self.dropout = nn.Dropout(p=0.4)
         
         def forward(self, x):
             x = self.conv1(x)
@@ -30,11 +30,10 @@ if __name__ == '__main__':
             x = self.fcon3(x)
             return x
 
-    use_saved = True
-
-    train_images = (mnist.train_images()/255 - 0.5).reshape(60000, 1, 28, 28)
+    use_saved = False
+    train_images = (mnist.train_images()/255-0.5).reshape(60000, 1, 28, 28)
     train_labels = mnist.train_labels()
-    test_images = (mnist.test_images()/255 - 0.5).reshape(10000, 1, 28, 28)
+    test_images = (mnist.test_images()/255-0.5).reshape(10000, 1, 28, 28)
     test_labels = mnist.test_labels()
     train_images, test_images = map(torch.tensor, (train_images, test_images))
 
@@ -51,7 +50,8 @@ if __name__ == '__main__':
     cnn.cuda()
 
     loss_func = nn.CrossEntropyLoss()
-    optimiser = torch.optim.SGD(cnn.parameters(), lr = 0.005)
+    optimiser = torch.optim.SGD(cnn.parameters(), lr = 0.05)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimiser, step_size=15, gamma=0.5)
 
     def test():
         cnn.eval()
@@ -67,7 +67,6 @@ if __name__ == '__main__':
         return accuracy
 
     def train(num_epochs, cnn):
-        best_res = 99.61
         for epoch in range(num_epochs):
             cnn.train()
             for (images, labels) in train_loader:
@@ -78,12 +77,10 @@ if __name__ == '__main__':
                 optimiser.zero_grad()           
                 loss.backward()                
                 optimiser.step()
-
+            
+            scheduler.step()
             print ('Epoch [{}/{}]'.format(epoch + 1, num_epochs))
 
-            test_res = test()
-            if test_res >= best_res:
-                best_res = test_res
-                torch.save(cnn, 'torch_mnistcnn.pt')
+    train(60, cnn)
+    torch.save(cnn, 'torch_mnistcnn.pt')
     test()
-    #train(40, cnn)
