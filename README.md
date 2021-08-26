@@ -1,5 +1,5 @@
 # EMNIST-Convolutional-Neural-Net
-A convolutional neural network implemented in PyTorch that achieved a 99.71% classification accurracy on the EMNIST dataset after 60 epochs of training, without using an ensemble of networks. I included a checkpoint at the 99.71% accurracy.
+A convolutional neural network implemented in PyTorch that achieved a 99.71% classification accurracy on the EMNIST dataset of digits after 60 epochs of training, without using an ensemble of networks. I included a checkpoint at the 99.71% accurracy.
 # Requirements
 ```
 pip install emnist matplotlib torch==1.9.0+cu111
