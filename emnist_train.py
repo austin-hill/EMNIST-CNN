@@ -42,6 +42,8 @@ def valid(cnn, valid_loader):
 
 def train_plot_params(epochs, train_data, valid_data):
     '''Plots accuracy on validation data for all combinations of given parameters'''
+    # Take subset of data to save time
+    train_data = train_data[:50000]
     # Parameters
     fmaps1s = [40]
     fmaps2s = [160]
@@ -59,7 +61,7 @@ def train_plot_params(epochs, train_data, valid_data):
 
         loss_func = torch.nn.CrossEntropyLoss()
         optimiser = torch.optim.SGD(cnn.parameters(), lr = 0.02*math.sqrt(params[4]))
-        scheduler = torch.optim.lr_scheduler.StepLR(optimiser, step_size=15, gamma=0.5)
+        scheduler = torch.optim.lr_scheduler.StepLR(optimiser, step_size=10, gamma=0.5)
 
         plots.append((train(epochs, cnn, train_loader, valid_loader, optimiser, loss_func, scheduler=scheduler), *params))
     
